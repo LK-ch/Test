@@ -1,1 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ehe in der Schweiz - Interaktiver Lernguide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --primary: #C41E3A;
+            --primary-dark: #9B1829;
+            --secondary: #2B5A8E;
+            --light-bg: #F8F9FA;
+            --dark-text: #1A1A1A;
+            --gray: #6C757D;
+            --border: #DEE2E6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M50 10 L90 90 L10 90 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: 150px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0) rotate(0deg); }
+            to { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .intro-text {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--dark-text);
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .topic-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .topic-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(196, 30, 58, 0.3);
+        }
+
+        .topic-card:nth-child(2) .topic-icon {
+            background: linear-gradient(135deg, #2B5A8E, #1E3A5F);
+            box-shadow: 0 5px 15px rgba(43, 90, 142, 0.3);
+        }
+
+        .topic-card:nth-child(3) .topic-icon {
+            background: linear-gradient(135deg, #6A1B9A, #9C27B0);
+            box-shadow: 0 5px 15px rgba(106, 27, 154, 0.3);
+        }
+
+        .topic-card:nth-child(4) .topic-icon {
+            background: linear-gradient(135deg, #D84315, #FF6F00);
+            box-shadow: 0 5px 15px rgba(216, 67, 21, 0.3);
+        }
+
+        .topic-title {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .topic-description {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .topic-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .topic-cta::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card:hover .topic-cta::after {
+            transform: translateX(5px);
+        }
+
+        footer {
+            background: var(--dark-text);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .hero {
+                padding: 3rem 1.5rem 2rem;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Ehe in der Schweiz</h1>
+            <p class="subtitle">Interaktiver Lernguide zu Eherecht, Voraussetzungen und rechtlichen Aspekten</p>
+            <span class="badge">🇨🇭 Basierend auf Schweizer ZGB</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <p class="intro-text">
+            Willkommen zum interaktiven Lernguide über die Ehe in der Schweiz. Entdecken Sie die rechtlichen 
+            Grundlagen, Voraussetzungen und Konsequenzen der Eheschliessung nach Schweizer Recht. Wählen Sie 
+            ein Thema aus, um mehr zu erfahren.
+        </p>
+
+        <div class="topics-grid">
+            <a href="ehehindernisse.html" class="topic-card">
+                <div class="topic-icon">⚖️</div>
+                <h2 class="topic-title">Ehehindernisse</h2>
+                <p class="topic-description">
+                    Erfahren Sie, welche gesetzlichen Hindernisse einer Eheschliessung entgegenstehen können. 
+                    Von Verwandtschaft über Alter bis zur bereits bestehenden Ehe.
+                </p>
+                <span class="topic-cta">Mehr erfahren</span>
+            </a>
+
+            <a href="heiraten.html" class="topic-card">
+                <div class="topic-icon">💍</div>
+                <h2 class="topic-title">Heiraten in der Schweiz</h2>
+                <p class="topic-description">
+                    Der Weg zum Traualtar: Vorbereitungsverfahren, erforderliche Dokumente, Ablauf der 
+                    Trauung und rechtliche Voraussetzungen für die Eheschliessung.
+                </p>
+                <span class="topic-cta">Mehr erfahren</span>
+            </a>
+
+            <a href="ehe-vs-konkubinat.html" class="topic-card">
+                <div class="topic-icon">⚖️</div>
+                <h2 class="topic-title">Ehe vs. Konkubinat</h2>
+                <p class="topic-description">
+                    Ein detaillierter Vergleich der Vor- und Nachteile von Ehe und Konkubinat in Bezug 
+                    auf Steuern, Vorsorge, Erbrecht und soziale Absicherung.
+                </p>
+                <span class="topic-cta">Mehr erfahren</span>
+            </a>
+
+            <a href="scheidung.html" class="topic-card">
+                <div class="topic-icon">📋</div>
+                <h2 class="topic-title">Scheidung</h2>
+                <p class="topic-description">
+                    Alles Wichtige zum Scheidungsverfahren: Voraussetzungen, Ablauf, Kosten und 
+                    rechtliche Folgen einer Ehescheidung in der Schweiz.
+                </p>
+                <span class="topic-cta">Mehr erfahren</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 | Interaktiver Lernguide zum Schweizer Eherecht | Bildungsprojekt</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Alle Angaben basieren auf dem Schweizerischen Zivilgesetzbuch (ZGB)</p>
+    </footer>
+</body>
+</html>
